@@ -50,7 +50,6 @@ if __name__ == "__main__":
     while (seeking == True):
         #Get players position
         playerPos = mc.player.getPos()
-        #Has the player moved
         distanceFromBlock = distanceBetweenPoints(randomBlockPos, playerPos)
         
         if distanceFromBlock < 2:
@@ -64,5 +63,7 @@ if __name__ == "__main__":
                 blinkOn = min(distanceFromBlock / 20, 0.5)
                 blinkOff = distanceFromBlock / 60
 
-                led.blink(blinkOn, blinkOff, 1)
-                sleep(blinkOn + blinkOff)
+                led.on()
+                sleep(blinkOn)
+                led.off()
+                sleep(blinkOff)
