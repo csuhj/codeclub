@@ -1,17 +1,11 @@
 #Adapted from a script by www.stuffaboutcode.com
 #Raspberry Pi, Minecraft - hide and seek
 
-#import the minecraft.py module from the minecraft directory
 import mcpi.minecraft as minecraft
-#import minecraft block module
 import mcpi.block as block
-#import sleep from the time library
 from time import sleep
-#import random module to create random number
 import random
-#import math module to use square root function
 import math
-#import the GPIO Zero library, specifically LED for the light
 from gpiozero import LED
 
 led = LED(17)
@@ -53,28 +47,22 @@ if __name__ == "__main__":
   
     #Start hide and seek
     seeking = True
-    lastPlayerPos = playerPos
-    lastDistanceFromBlock = distanceBetweenPoints(randomBlockPos, lastPlayerPos)
-    position = 5
     while (seeking == True):
         #Get players position
         playerPos = mc.player.getPos()
         #Has the player moved
-        if lastPlayerPos != playerPos:
-            distanceFromBlock = distanceBetweenPoints(randomBlockPos, playerPos)
-            
-            print distanceFromBlock
-            
-            if distanceFromBlock < 2:
-                #found it!
-                mc.postToChat("You found the block!")
-                seeking = False
+        distanceFromBlock = distanceBetweenPoints(randomBlockPos, playerPos)
+        
+        if distanceFromBlock < 2:
+            #found it!
+            mc.postToChat("You found the block!")
+            seeking = False
+        else:
+            if distanceFromBlock > 100:
+                led.off()
             else:
-                if distanceFromBlock > 100:
-                    led.off()
-                else:
-                    blinkOn = min(distanceFromBlock / 20, 0.5)
-                    blinkOff = distanceFromBlock / 60
+                blinkOn = min(distanceFromBlock / 20, 0.5)
+                blinkOff = distanceFromBlock / 60
 
-                    led.blink(blinkOn, blinkOff)
-                    sleep(blinkOn + blinkOff)
+                led.blink(blinkOn, blinkOff, 1)
+                sleep(blinkOn + blinkOff)
