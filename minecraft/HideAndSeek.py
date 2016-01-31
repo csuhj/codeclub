@@ -63,29 +63,18 @@ if __name__ == "__main__":
         if lastPlayerPos != playerPos:
             distanceFromBlock = distanceBetweenPoints(randomBlockPos, playerPos)
             
-            print playerPos
+            print distanceFromBlock
+            
             if distanceFromBlock < 2:
                 #found it!
+                mc.postToChat("You found the block!")
                 seeking = False
             else:
-                if distanceFromBlock < 5 and position != 4:
-                    led.on()
-                    position = 4
-                if 4 < distanceFromBlock < 11 and position != 3:
-                    led.blink(0.3,0.3)
-                    position = 3
-                if 10 < distanceFromBlock < 26 and position != 2:
-                    led.blink(0.6,0.5)
-                    position = 2
-                if 25 < distanceFromBlock < 41 and position != 1:
-                    led.blink(1,0.5)
-                    position = 1
-                if distanceFromBlock > 40 and distanceFromBlock < lastDistanceFromBlock:
-                    led.blink()
-                if distanceFromBlock > 40 and distanceFromBlock > lastDistanceFromBlock:
+                if distanceFromBlock > 100:
                     led.off()
-          
-            lastDistanceFromBlock = distanceFromBlock
-          
-        sleep(0.5)
-    mc.postToChat("You found the block!")
+                else:
+                    blinkOn = min(distanceFromBlock / 20, 0.5)
+                    blinkOff = distanceFromBlock / 60
+
+                    led.blink(blinkOn, blinkOff)
+                    sleep(blinkOn + blinkOff)
